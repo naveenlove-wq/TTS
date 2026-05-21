@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoeGo Customer Transition Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal-900: #0B4C41;
+  --teal-700: #0D7A6B;
+  --teal-500: #2D8A7A;
+  --teal-50: #E6F4F1;
+  --navy-700: #1E3A5F;
+  --amber-900: #78350F;
+  --amber-800: #92400E;
+  --amber-700: #D97706;
+  --amber-50: #FEF3C7;
+  --green-900: #065F46;
+  --green-700: #059669;
+  --green-50: #D1FAE5;
+  --gray-800: #1E293B;
+  --gray-600: #475569;
+  --gray-500: #64748B;
+  --gray-400: #94A3B8;
+  --gray-200: #E2E8F0;
+  --gray-100: #F1F5F9;
+  --gray-50: #F8FAFC;
+  --white: #FFFFFF;
+  --red-900: #7F1D1D;
+  --red-50: #FEE2E2;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--gray-800);
+  background: var(--gray-50);
+}
+
+.doc {
+  max-width: 940px;
+  margin: 0 auto;
+  background: var(--white);
+  min-height: 100vh;
+}
+
+.doc-header {
+  background: var(--navy-700);
+  padding: 52px 64px 44px;
+  color: white;
+}
+.doc-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin-bottom: 6px;
+}
+.doc-header .subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 28px;
+}
+.doc-header .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 32px;
+  font-size: 12px;
+}
+.doc-header .meta-item { color: rgba(255,255,255,0.5); }
+.doc-header .meta-item strong {
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.doc-body { padding: 52px 64px; }
+
+section { margin-bottom: 60px; }
+
+.section-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-700);
+  margin-bottom: 8px;
+}
+h2 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--navy-700);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+h3 {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 28px 0 10px;
+}
+p {
+  font-size: 13.5px;
+  color: var(--gray-600);
+  margin-bottom: 14px;
+  max-width: 700px;
+}
+
+.toc {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 22px 28px;
+  margin-bottom: 52px;
+}
+.toc-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 14px;
+}
+.toc ol { list-style: none; counter-reset: toc; }
+.toc li {
+  counter-increment: toc;
+  font-size: 13px;
+  color: var(--teal-700);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.toc li:last-child { border-bottom: none; }
+.toc li::before {
+  content: "0" counter(toc) ". ";
+  color: var(--gray-400);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin: 20px 0 8px;
+}
+.tier-card {
+  border-radius: 10px;
+  padding: 16px 14px;
+  border: 1px solid transparent;
+}
+.tier-card.tts-path { background: var(--teal-50); border-color: rgba(13,122,107,0.18); }
+.tier-card.support-path { background: var(--amber-50); border-color: rgba(217,119,6,0.18); }
+.tier-num { font-size: 22px; font-weight: 600; margin-bottom: 2px; }
+.tts-path .tier-num { color: var(--teal-700); }
+.support-path .tier-num { color: var(--amber-700); }
+.tier-name {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 10px;
+}
+.tts-path .tier-name { color: var(--teal-700); }
+.support-path .tier-name { color: var(--amber-700); }
+.tier-desc { font-size: 11px; color: var(--gray-600); line-height: 1.55; margin-bottom: 10px; }
+.tier-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.tts-path .tier-badge { background: rgba(13,122,107,0.12); color: var(--teal-900); }
+.support-path .tier-badge { background: rgba(217,119,6,0.12); color: var(--amber-900); }
+.footnote { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 16px 0; }
+thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  padding: 8px 12px;
+  border-bottom: 1.5px solid var(--gray-200);
+}
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-800);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.badge-green { background: var(--green-50); color: var(--green-900); }
+.badge-amber { background: var(--amber-50); color: var(--amber-900); }
+.badge-red { background: var(--red-50); color: var(--red-900); }
+.badge-gray { background: var(--gray-100); color: var(--gray-600); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+.info-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 18px;
+}
+.info-card h4 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.info-card ul { list-style: none; font-size: 12.5px; color: var(--gray-600); }
+.info-card li { display: flex; gap: 8px; padding: 4px 0; }
+.info-card li::before { content: '–'; color: var(--teal-500); flex-shrink: 0; }
+
+.callout {
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 16px 0;
+  max-width: 700px;
+}
+.callout strong { font-weight: 600; }
+.callout-teal { background: var(--teal-50); border-left: 3px solid var(--teal-700); color: var(--teal-900); }
+.callout-amber { background: var(--amber-50); border-left: 3px solid var(--amber-700); color: var(--amber-900); }
+
+.step-list { list-style: none; counter-reset: steps; margin: 16px 0; }
+.step-list li {
+  counter-increment: steps;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--gray-600);
+  max-width: 700px;
+}
+.step-list li::before {
+  content: counter(steps);
+  min-width: 24px;
+  height: 24px;
+  background: var(--teal-50);
+  color: var(--teal-700);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-list li strong { color: var(--gray-800); font-weight: 600; }
+
+.flow-wrap {
+  margin: 20px 0;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 24px 16px;
+  overflow-x: auto;
+}
+.flow-wrap svg { display: block; margin: 0 auto; max-width: 100%; }
+
+.email-seq {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  align-items: center;
+  margin: 20px 0;
+}
+.email-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 20px;
+}
+.email-trigger {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal-700);
+  margin-bottom: 6px;
+}
+.email-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy-700);
+  margin-bottom: 8px;
+}
+.email-card p { font-size: 12.5px; max-width: none; margin: 0; }
+.email-arrow { text-align: center; font-size: 22px; color: var(--gray-400); }
+
+.doc-footer {
+  border-top: 1px solid var(--gray-200);
+  padding: 24px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.doc-footer p { font-size: 11px; color: var(--gray-400); margin: 0; max-width: none; }
+.draft-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--amber-50);
+  color: var(--amber-900);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(217,119,6,0.2);
+}
+.draft-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--amber-700);
+  border-radius: 50%;
+}
+
+@media print {
+  body { background: white; }
+  .doc { box-shadow: none; }
+}
+@media (max-width: 720px) {
+  .doc-header, .doc-body, .doc-footer { padding-left: 24px; padding-right: 24px; }
+  .tier-grid { grid-template-columns: repeat(3, 1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  .email-seq { grid-template-columns: 1fr; }
+  .email-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<div class="doc-header">
+  <h1>Customer Transition Framework</h1>
+  <div class="subtitle">Transition to Success (TTS) and Transition to Support — All Tiers</div>
+  <div class="meta">
+    <span class="meta-item"><strong>Status:</strong> Draft for review</span>
+    <span class="meta-item"><strong>Owner:</strong> Implementation</span>
+    <span class="meta-item"><strong>Audience:</strong> CS Leadership, Implementation Leadership, GM</span>
+    <span class="meta-item"><strong>ARR threshold:</strong> $12K placeholder — pending finalization</span>
+  </div>
+</div>
+
+<div class="doc-body">
+
+<div class="toc">
+  <div class="toc-label">Contents</div>
+  <ol>
+    <li>Overview</li>
+    <li>Customer tier segmentation</li>
+    <li>Transition to Success (T1–T3)</li>
+    <li>CSM exception request process</li>
+    <li>Transition to Support (T4–T5)</li>
+  </ol>
+</div>
+
+<!-- 01 OVERVIEW -->
+<section>
+  <div class="section-tag">01 — Overview</div>
+  <h2>Purpose and scope</h2>
+  <p>This document defines MoeGo's process for moving customers out of onboarding and into their post-onboarding relationship — either with a dedicated Customer Success Manager (Transition to Success) or into a self-serve support model (Transition to Support). It covers all customer tiers, defines readiness criteria, documents the handoff mechanics, and establishes the exception process for below-threshold customers who may need CS coverage.</p>
+  <div class="callout callout-teal">
+    <strong>Two distinct paths.</strong> T1–T3 customers transition to a CSM (Transition to Success). T4–T5 customers transition to support resources (Transition to Support). The process, timing, and tooling differ meaningfully between the two.
+  </div>
+</section>
+
+<!-- 02 TIER SEGMENTATION -->
+<section>
+  <div class="section-tag">02 — Tier Segmentation</div>
+  <h2>Customer tiers at a glance</h2>
+  <p>Tier determines onboarding type, CSM eligibility, and post-onboarding support path.</p>
+
+  <div class="tier-grid">
+    <div class="tier-card tts-path">
+      <div class="tier-num">T1</div>
+      <div class="tier-name">Enterprise</div>
+      <div class="tier-desc">Guided onboarding. CSM assigned at go-live.</div>
+      <span class="tier-badge">Transition to Success</span>
+    </div>
+    <div class="tier-card tts-path">
+      <div class="tier-num">T2</div>
+      <div class="tier-name">Mid-Market</div>
+      <div class="tier-desc">Guided onboarding. CSM if ARR ≥ $12K.*</div>
+      <span class="tier-badge">Transition to Success</span>
+    </div>
+    <div class="tier-card tts-path">
+      <div class="tier-num">T3</div>
+      <div class="tier-name">Growth</div>
+      <div class="tier-desc">Guided onboarding. CSM if ARR ≥ $12K.*</div>
+      <span class="tier-badge">Transition to Success</span>
+    </div>
+    <div class="tier-card support-path">
+      <div class="tier-num">T4</div>
+      <div class="tier-name">SMB</div>
+      <div class="tier-desc">Guided or self-serve. No CSM.</div>
+      <span class="tier-badge">Transition to Support</span>
+    </div>
+    <div class="tier-card support-path">
+      <div class="tier-num">T5</div>
+      <div class="tier-name">Self-Serve</div>
+      <div class="tier-desc">Self-serve onboarding. No CSM.</div>
+      <span class="tier-badge">Transition to Support</span>
+    </div>
+  </div>
+  <p class="footnote">* $12K ARR is a placeholder threshold, pending confirmation from CS and Finance leadership.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Onboarding type</th>
+        <th>CSM eligible</th>
+        <th>Post-onboarding path</th>
+        <th>ARR threshold applies</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>T1</strong></td>
+        <td>Guided</td>
+        <td><span class="badge badge-green">Always</span></td>
+        <td>Transition to Success</td>
+        <td><span class="badge badge-gray">No — always assigned</span></td>
+      </tr>
+      <tr>
+        <td><strong>T2</strong></td>
+        <td>Guided</td>
+        <td><span class="badge badge-amber">Conditional</span></td>
+        <td>TTS or exception request</td>
+        <td><span class="badge badge-amber">Yes — $12K*</span></td>
+      </tr>
+      <tr>
+        <td><strong>T3</strong></td>
+        <td>Guided</td>
+        <td><span class="badge badge-amber">Conditional</span></td>
+        <td>TTS or exception request</td>
+        <td><span class="badge badge-amber">Yes — $12K*</span></td>
+      </tr>
+      <tr>
+        <td><strong>T4</strong></td>
+        <td>Guided / Self-serve</td>
+        <td><span class="badge badge-red">No</span></td>
+        <td>Transition to Support</td>
+        <td><span class="badge badge-gray">N/A</span></td>
+      </tr>
+      <tr>
+        <td><strong>T5</strong></td>
+        <td>Self-serve</td>
+        <td><span class="badge badge-red">No</span></td>
+        <td>Transition to Support</td>
+        <td><span class="badge badge-gray">N/A</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 03 TTS PROCESS -->
+<section>
+  <div class="section-tag">03 — Transition to Success</div>
+  <h2>TTS process: T1–T3</h2>
+  <p>There are two distinct moments in the TTS process. CSM assignment is triggered at go-live. Formal handoff is triggered after the 2-week post-live period, once the customer has cleared all readiness criteria. These are separate events.</p>
+
+  <h3>Readiness criteria</h3>
+  <div class="two-col">
+    <div class="info-card">
+      <h4>Required to proceed</h4>
+      <ul>
+        <li>Customer is confirmed live in MoeGo</li>
+        <li>Burndown list fully resolved</li>
+        <li>Minimum 2 weeks post-go-live elapsed</li>
+        <li>No active escalations</li>
+        <li>CSM has been briefed and formally accepts the transition</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>Does not block transition</h4>
+      <ul>
+        <li>Open enhancement requests</li>
+        <li>Open bugs tracked by product or engineering</li>
+        <li>Feature requests under backlog review</li>
+        <li>Non-critical open support tickets</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-amber">
+    <strong>Blocker definition.</strong> Any item that is workflow-related or affects day-to-day operations is a hard blocker and must be resolved before transition. Open bugs, enhancements, and non-operational items pass to the CSM as documented managed risk.
+  </div>
+
+  <h3>Process flow</h3>
+  <div class="flow-wrap">
+    <svg width="100%" viewBox="0 0 680 650"
+         font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
+         role="img">
+      <title>Transition to Success process flow for T1 through T3 customers</title>
+      <defs>
+        <marker id="arrTTS" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M1 2L9 5L1 8" fill="none" stroke="#94A3B8"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- 1. Start pill -->
+      <rect x="220" y="24" width="240" height="40" rx="20"
+            fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="44" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#1E293B">Customer goes live</text>
+
+      <line x1="340" y1="64" x2="340" y2="94"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+
+      <!-- 2. CSM assignment (two-line) -->
+      <rect x="220" y="96" width="240" height="56" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="116" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">CSM assignment triggered</text>
+      <text x="340" y="137" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#2D8A7A">ARR ≥ $12K (placeholder)</text>
+
+      <line x1="340" y1="152" x2="340" y2="182"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+
+      <!-- 3. 2-week period -->
+      <rect x="220" y="184" width="240" height="44" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="206" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">2-week post-live period</text>
+
+      <line x1="340" y1="228" x2="340" y2="256"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+
+      <!-- 4. Diamond: Transition ready? center (340, 294) -->
+      <polygon points="340,256 454,294 340,332 226,294"
+               fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="294" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#475569">Transition ready?</text>
+
+      <!-- YES down -->
+      <line x1="340" y1="332" x2="340" y2="366"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+      <text x="354" y="351" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
+
+      <!-- NO right -->
+      <line x1="454" y1="294" x2="468" y2="294"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+      <text x="455" y="282" font-size="11" font-weight="600" fill="#D97706">NO</text>
+
+      <!-- Right: Transition blocked (center y=294) -->
+      <rect x="470" y="272" width="168" height="44" rx="8"
+            fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="554" y="287" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#78350F">Transition blocked</text>
+      <text x="554" y="303" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#92400E">Held until resolved</text>
+
+      <!-- 5. Internal handover call -->
+      <rect x="220" y="368" width="240" height="44" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="390" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">Internal handover call</text>
+
+      <line x1="340" y1="412" x2="340" y2="444"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+
+      <!-- 6. Diamond: CSM accepts? center (340, 478) -->
+      <polygon points="340,444 444,478 340,512 236,478"
+               fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="478" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#475569">CSM accepts?</text>
+
+      <!-- YES down -->
+      <line x1="340" y1="512" x2="340" y2="546"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+      <text x="354" y="531" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
+
+      <!-- NO right -->
+      <line x1="444" y1="478" x2="468" y2="478"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrTTS)"/>
+      <text x="447" y="466" font-size="11" font-weight="600" fill="#D97706">NO</text>
+
+      <!-- Right: Resolve open items (center y=478) -->
+      <rect x="470" y="456" width="168" height="44" rx="8"
+            fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="554" y="471" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#78350F">Resolve open items</text>
+      <text x="554" y="487" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#92400E">Re-enter handover</text>
+
+      <!-- 7. End pill: TTS complete -->
+      <rect x="220" y="548" width="240" height="40" rx="20"
+            fill="#D1FAE5" stroke="#059669" stroke-width="1"/>
+      <text x="340" y="568" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#065F46">TTS complete</text>
+    </svg>
+  </div>
+
+  <h3>Handoff components</h3>
+  <ol class="step-list">
+    <li><strong>TTS form completed</strong> by the IM prior to the internal handover call. Documents account health, open items, key contacts, and go-live summary.</li>
+    <li><strong>Internal handover call</strong> between IM and CSM. The CSM reviews the account, confirms no active blockers, and formally accepts the transition. The CSM has the authority — and responsibility — to block the transition if readiness criteria are not met. This is not advisory.</li>
+    <li><strong>Warm handoff to customer</strong> introduces the CSM, clarifies what being "in success" means operationally versus onboarding, and sets expectations for the CS relationship going forward.</li>
+  </ol>
+
+  <div class="callout callout-teal">
+    <strong>CSM authority.</strong> The CSM can and should block a transition on the internal handover call if the customer does not meet readiness criteria. If the IM and CSM disagree on readiness, the item escalates to CS leadership and Implementation leadership for resolution.
+  </div>
+</section>
+
+<!-- 04 EXCEPTION PROCESS -->
+<section>
+  <div class="section-tag">04 — Exception Request</div>
+  <h2>CSM exception request process</h2>
+  <p>Customers below the $12K ARR threshold are not automatically assigned a CSM. This process allows an AE or IM to formally request CS coverage for an exception case. All requests are reviewed and approved by CS leadership.</p>
+
+  <h3>Exception request flow</h3>
+  <div class="flow-wrap">
+    <svg width="100%" viewBox="0 0 680 450"
+         font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
+         role="img">
+      <title>CSM exception request process flow</title>
+      <defs>
+        <marker id="arrEX" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M1 2L9 5L1 8" fill="none" stroke="#94A3B8"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- 1. Start pill -->
+      <rect x="220" y="24" width="240" height="40" rx="20"
+            fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="44" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#1E293B">AE or IM submits request</text>
+
+      <line x1="340" y1="64" x2="340" y2="94"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrEX)"/>
+
+      <!-- 2. Exception form (two-line) -->
+      <rect x="220" y="96" width="240" height="56" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="116" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">Exception request form</text>
+      <text x="340" y="136" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#2D8A7A">Reason + narrative justification</text>
+
+      <line x1="340" y1="152" x2="340" y2="182"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrEX)"/>
+
+      <!-- 3. CS leadership review -->
+      <rect x="220" y="184" width="240" height="44" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="206" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">CS leadership review</text>
+
+      <line x1="340" y1="228" x2="340" y2="258"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrEX)"/>
+
+      <!-- 4. Diamond: Approved? center (340, 292) -->
+      <polygon points="340,258 430,292 340,326 250,292"
+               fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="292" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#475569">Approved?</text>
+
+      <!-- YES down -->
+      <line x1="340" y1="326" x2="340" y2="360"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrEX)"/>
+      <text x="354" y="345" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
+
+      <!-- End: CSM assigned -->
+      <rect x="220" y="362" width="240" height="40" rx="20"
+            fill="#D1FAE5" stroke="#059669" stroke-width="1"/>
+      <text x="340" y="382" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#065F46">CSM assigned → standard TTS</text>
+
+      <!-- NO right -->
+      <line x1="430" y1="292" x2="454" y2="292"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrEX)"/>
+      <text x="434" y="280" font-size="11" font-weight="600" fill="#D97706">NO</text>
+
+      <!-- Right: Routes to support (center y=292) -->
+      <rect x="456" y="270" width="178" height="44" rx="8"
+            fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="545" y="285" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#78350F">Routes to support path</text>
+      <text x="545" y="301" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#92400E">Transition to Support</text>
+    </svg>
+  </div>
+
+  <h3>Request form fields</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Customer name and account ID</td>
+        <td><span class="badge badge-green">Required</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Current ARR</td>
+        <td><span class="badge badge-green">Required</span></td>
+        <td>Must be below the $12K threshold to qualify for exception review</td>
+      </tr>
+      <tr>
+        <td>Reason for request</td>
+        <td><span class="badge badge-green">Required</span></td>
+        <td>Select from defined reason list — to be added prior to finalization</td>
+      </tr>
+      <tr>
+        <td>Narrative justification</td>
+        <td><span class="badge badge-green">Required</span></td>
+        <td>Free-text. Required when reason is not on the list or additional context is needed</td>
+      </tr>
+      <tr>
+        <td>Requestor name and role</td>
+        <td><span class="badge badge-green">Required</span></td>
+        <td>AE or IM</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-teal">
+    <strong>Reason list pending.</strong> A defined list of qualifying exception reasons will be added before this document is finalized. The narrative justification field is always available alongside the list to capture context not covered by the defined options.
+  </div>
+</section>
+
+<!-- 05 TRANSITION TO SUPPORT -->
+<section>
+  <div class="section-tag">05 — Transition to Support</div>
+  <h2>Transition to Support: T4–T5</h2>
+  <p>SMB and self-serve customers do not receive a dedicated CSM. Post-onboarding is handled through an automated sequence triggered by go-live in Salesforce, with support as the primary resource for help and structured touchpoints to surface dissatisfaction early.</p>
+
+  <h3>Automated email sequence</h3>
+  <div class="email-seq">
+    <div class="email-card">
+      <div class="email-trigger">Go-live trigger</div>
+      <h4>Go-live confirmation</h4>
+      <p>Sent 1 week after the live trigger fires in Salesforce (via Zapier), contingent on no active escalations. Celebrates the milestone and provides links to the wiki and feature adoption resources: memberships, marketing integrations, leads management, campaign tracking, and reporting.</p>
+    </div>
+    <div class="email-arrow">→</div>
+    <div class="email-card">
+      <div class="email-trigger">30 days post-live</div>
+      <h4>Health check</h4>
+      <p>Sentiment check at 30 days. Negative responses automatically route to a support outreach to schedule a call and address open issues. Positive responses continue on the self-serve adoption path.</p>
+    </div>
+  </div>
+
+  <h3>Transition to Support flow</h3>
+  <div class="flow-wrap">
+    <svg width="100%" viewBox="0 0 680 650"
+         font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
+         role="img">
+      <title>Transition to Support process flow for T4 and T5 customers</title>
+      <defs>
+        <marker id="arrSMB" viewBox="0 0 10 10" refX="9" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M1 2L9 5L1 8" fill="none" stroke="#94A3B8"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- 1. Start pill -->
+      <rect x="220" y="24" width="240" height="40" rx="20"
+            fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="44" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#1E293B">Customer goes live</text>
+
+      <line x1="340" y1="64" x2="340" y2="94"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+
+      <!-- 2. Monitoring window (two-line) -->
+      <rect x="220" y="96" width="240" height="56" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="116" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">1-week monitoring window</text>
+      <text x="340" y="136" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#2D8A7A">Salesforce + Zapier trigger</text>
+
+      <line x1="340" y1="152" x2="340" y2="182"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+
+      <!-- 3. Diamond: Active escalation? center (340, 218) -->
+      <polygon points="340,182 454,218 340,254 226,218"
+               fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="218" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#475569">Active escalation?</text>
+
+      <!-- YES right -->
+      <line x1="454" y1="218" x2="468" y2="218"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+      <text x="454" y="206" font-size="11" font-weight="600" fill="#D97706">YES</text>
+
+      <!-- Right: Support review (center y=218) -->
+      <rect x="470" y="196" width="168" height="44" rx="8"
+            fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="554" y="211" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#78350F">Support review</text>
+      <text x="554" y="227" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#92400E">Email held, account flagged</text>
+
+      <!-- NO down -->
+      <line x1="340" y1="254" x2="340" y2="286"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+      <text x="354" y="272" font-size="11" font-weight="600" fill="#0D7A6B">NO</text>
+
+      <!-- 4. Go-live email (two-line) -->
+      <rect x="220" y="288" width="240" height="56" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="308" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">Go-live email sent</text>
+      <text x="340" y="328" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#2D8A7A">Resources + wiki links</text>
+
+      <line x1="340" y1="344" x2="340" y2="374"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+
+      <!-- 5. 30-day health check -->
+      <rect x="220" y="376" width="240" height="44" rx="8"
+            fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
+      <text x="340" y="398" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#0B4C41">30-day health check email</text>
+
+      <line x1="340" y1="420" x2="340" y2="450"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+
+      <!-- 6. Diamond: Negative response? center (340, 486) -->
+      <polygon points="340,450 444,486 340,522 236,486"
+               fill="#F8FAFC" stroke="#94A3B8" stroke-width="1"/>
+      <text x="340" y="486" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#475569">Negative response?</text>
+
+      <!-- YES right -->
+      <line x1="444" y1="486" x2="458" y2="486"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+      <text x="445" y="474" font-size="11" font-weight="600" fill="#D97706">YES</text>
+
+      <!-- Right: Support outreach (center y=486) -->
+      <rect x="460" y="464" width="178" height="44" rx="8"
+            fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="549" y="479" text-anchor="middle" dominant-baseline="central"
+            font-size="12" font-weight="500" fill="#78350F">Support outreach</text>
+      <text x="549" y="495" text-anchor="middle" dominant-baseline="central"
+            font-size="11" fill="#92400E">Call booked with customer</text>
+
+      <!-- NO down -->
+      <line x1="340" y1="522" x2="340" y2="556"
+            stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#arrSMB)"/>
+      <text x="354" y="541" font-size="11" font-weight="600" fill="#0D7A6B">NO</text>
+
+      <!-- 7. End pill -->
+      <rect x="220" y="558" width="240" height="40" rx="20"
+            fill="#D1FAE5" stroke="#059669" stroke-width="1"/>
+      <text x="340" y="578" text-anchor="middle" dominant-baseline="central"
+            font-size="13" font-weight="500" fill="#065F46">Continued adoption</text>
+    </svg>
+  </div>
+
+  <h3>Go-live email trigger logic</h3>
+  <div class="two-col">
+    <div class="info-card">
+      <h4>Email sends when all are true</h4>
+      <ul>
+        <li>Customer is marked live in Salesforce</li>
+        <li>1 full week has elapsed since go-live</li>
+        <li>No active critical support escalations</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>If escalation is active at day 7</h4>
+      <ul>
+        <li>Email is held and not sent</li>
+        <li>Account is flagged for support review</li>
+        <li>Support team follows up directly</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-amber">
+    <strong>Open item: support outreach SLA.</strong> A negative 30-day health check response without a defined support outreach SLA is an unmanaged churn risk. The SLA for support follow-up on negative responses should be defined before this process goes live.
+  </div>
+</section>
+
+</div>
+
+<div class="doc-footer">
+  <p>MoeGo Implementation · Customer Transition Framework · For internal review only</p>
+  <span class="draft-pill">Draft — Pending Review</span>
+</div>
+
+</div>
+</body>
+</html>
