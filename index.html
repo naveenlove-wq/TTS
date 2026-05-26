@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoeGo Customer Transition to Success Framework</title>
+<title>MoeGo Customer Transition Framework</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --teal-900: #0B4C41; --teal-700: #0D7A6B; --teal-500: #2D8A7A; --teal-50: #E6F4F1;
-  --navy-700: #f07e05;
+  --navy-700: #1E3A5F;
   --amber-900: #78350F; --amber-800: #92400E; --amber-700: #D97706; --amber-50: #FEF3C7;
   --green-900: #065F46; --green-700: #059669; --green-50: #D1FAE5;
   --gray-800: #1E293B; --gray-600: #475569; --gray-500: #64748B; --gray-400: #94A3B8;
@@ -19,7 +19,7 @@
 }
 body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; line-height: 1.7; color: var(--gray-800); background: var(--gray-50); }
 .doc { max-width: 940px; margin: 0 auto; background: var(--white); min-height: 100vh; }
-.doc-header { background: var(--navy-700); padding: 52px 64px 44px; color: white; }
+.doc-header { background: #F26522; padding: 52px 64px 44px; color: white; }
 .doc-header h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 6px; }
 .doc-header .subtitle { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
 .doc-header .meta { display: flex; flex-wrap: wrap; gap: 6px 32px; font-size: 12px; }
@@ -105,8 +105,11 @@ tbody tr:last-child td { border-bottom: none; }
 
 <div class="doc-header">
   <h1>Customer Transition Framework</h1>
-  <div class="subtitle">Transition to Success (TTS) and Transition to Support + CSM Exception Flow — All Tiers</div>
+  <div class="subtitle">Transition to Success (TTS) or Transition to Support Process — All Tiers</div>
   <div class="meta">
+    <span class="meta-item"><strong>Status:</strong> Draft for review</span>
+    <span class="meta-item"><strong>Owner:</strong> Naveen Love & Chris Van Wart</span>
+
   </div>
 </div>
 
@@ -150,14 +153,14 @@ tbody tr:last-child td { border-bottom: none; }
     <div class="tier-card tts-path">
       <div class="tier-num">T2</div>
       <div class="tier-name">Mid-Market</div>
-      <div class="tier-desc">Guided onboarding. CSM if ARR ≥ $12K or exception approved.*</div>
-      <span class="tier-badge">Transition to Success</span>
+      <div class="tier-desc">Guided onboarding. CSM if ARR ≥ $12K.*</div>
+      <span class="tier-badge">Transition to Success or Support</span>
     </div>
     <div class="tier-card tts-path">
       <div class="tier-num">T3</div>
       <div class="tier-name">Mid-Market</div>
       <div class="tier-desc">Guided onboarding. CSM if ARR ≥ $12K or exception approved.*</div>
-      <span class="tier-badge">Transition to Success</span>
+      <span class="tier-badge">Transition to Success or Support</span>
     </div>
     <div class="tier-card support-path">
       <div class="tier-num">T4</div>
@@ -240,7 +243,10 @@ tbody tr:last-child td { border-bottom: none; }
   <h2>TTS process: T1–T3</h2>
 
   <h3>T1 Enterprise: CSM assigned at kickoff</h3>
-  <p>T1 accounts receive a dedicated CSM before onboarding begins. The CSM is identified and assigned during pre-kickoff coordination between Implementation and CS leadership, and is introduced to the customer at or before the kickoff call. The formal TTS handoff still applies at go-live, but the CSM relationship is established from day one.</p>
+  <p>T1 accounts receive a dedicated CSM before onboarding begins. The CSM is identified and assigned during pre-kickoff coordination between Implementation and CS leadership, and is introduced to the customer at or before the kickoff call.</p>
+  <div class="callout callout-teal">
+    <strong>CSM involvement timing.</strong> Although the CSM is assigned at kickoff, active CSM involvement does not begin until locations start going live. Prior to that point, the IM owns the account relationship. Even after locations begin going live, the IM remains responsible for overall account health, status, and all tasks and issues coming from the account. The CSM is a relationship stakeholder during implementation — not a day-to-day operational owner — until the formal TTS handoff is complete.
+  </div>
 
   <h3>T2/T3 Mid-Market: weekly CS and Implementation assignment review</h3>
   <p>For T2 and T3 accounts, CSM assignment is driven by a weekly review cadence between CS leadership and Implementation. As part of the Salesforce buildout, a report will surface all live accounts at the parent level that have not yet been assigned a CSM. CS leadership reviews this list each week, assigns a CSM where the account qualifies, and coordinates with Implementation on any accounts that need additional context before the handoff call is scheduled.</p>
@@ -281,7 +287,7 @@ tbody tr:last-child td { border-bottom: none; }
     <!-- Main flow centered at x=255, boxes x=135 w=240.
          Diamonds center x=255, half-width=110 (left=145, right=365).
          Side boxes x=378 w=270 (center=513, right=648). -->
-    <svg width="100%" viewBox="0 0 680 708"
+    <svg width="100%" viewBox="0 0 720 708"
          font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
          role="img">
       <title>TTS process flow for T2 and T3 customers</title>
@@ -309,11 +315,11 @@ tbody tr:last-child td { border-bottom: none; }
       <line x1="255" y1="240" x2="255" y2="264" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
       <text x="269" y="254" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
       <!-- NO right: side box centered at y=202 -->
-      <line x1="365" y1="202" x2="376" y2="202" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
-      <text x="367" y="191" font-size="11" font-weight="600" fill="#D97706">NO</text>
-      <rect x="378" y="178" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
-      <text x="513" y="196" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Exception request</text>
-      <text x="513" y="214" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">or Transition to Support</text>
+      <line x1="365" y1="202" x2="404" y2="202" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+      <text x="372" y="191" font-size="11" font-weight="600" fill="#D97706">NO</text>
+      <rect x="408" y="178" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="543" y="196" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Exception request</text>
+      <text x="543" y="214" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">or Transition to Support</text>
 
       <!-- 4. CSM assigned y=264 h=44 -->
       <rect x="135" y="264" width="240" height="44" rx="8" fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
@@ -332,11 +338,11 @@ tbody tr:last-child td { border-bottom: none; }
       <line x1="255" y1="472" x2="255" y2="496" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
       <text x="269" y="486" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
       <!-- NO right: side box centered at y=434 -->
-      <line x1="365" y1="434" x2="376" y2="434" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
-      <text x="367" y="423" font-size="11" font-weight="600" fill="#D97706">NO</text>
-      <rect x="378" y="410" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
-      <text x="513" y="428" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Transition blocked</text>
-      <text x="513" y="446" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Held until criteria are met</text>
+      <line x1="365" y1="434" x2="404" y2="434" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+      <text x="372" y="423" font-size="11" font-weight="600" fill="#D97706">NO</text>
+      <rect x="408" y="410" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="543" y="428" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Transition blocked</text>
+      <text x="543" y="446" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Held until criteria are met</text>
 
       <!-- 7. Handover call y=496 h=44 -->
       <rect x="135" y="496" width="240" height="44" rx="8" fill="#E6F4F1" stroke="#0D7A6B" stroke-width="1"/>
@@ -350,11 +356,11 @@ tbody tr:last-child td { border-bottom: none; }
       <line x1="255" y1="640" x2="255" y2="664" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
       <text x="269" y="654" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
       <!-- NO right: side box centered at y=602 -->
-      <line x1="365" y1="602" x2="376" y2="602" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
-      <text x="367" y="591" font-size="11" font-weight="600" fill="#D97706">NO</text>
-      <rect x="378" y="578" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
-      <text x="513" y="596" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Resolve open items</text>
-      <text x="513" y="614" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Re-enter handover call</text>
+      <line x1="365" y1="602" x2="404" y2="602" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+      <text x="372" y="591" font-size="11" font-weight="600" fill="#D97706">NO</text>
+      <rect x="408" y="578" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="543" y="596" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Resolve open items</text>
+      <text x="543" y="614" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Re-enter handover call</text>
 
       <!-- 9. End pill y=664 h=40 -->
       <rect x="135" y="664" width="240" height="40" rx="20" fill="#D1FAE5" stroke="#059669" stroke-width="1"/>
@@ -385,7 +391,7 @@ tbody tr:last-child td { border-bottom: none; }
     <!-- Main flow centered at x=255, boxes x=135 w=240.
          Diamonds: center x=255, half-width=100 (left=155, right=355).
          Side boxes: x=368 w=270 (center=503, right=638). -->
-    <svg width="100%" viewBox="0 0 680 412"
+    <svg width="100%" viewBox="0 0 720 412"
          font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
          role="img">
       <title>CSM exception request process flow</title>
@@ -418,11 +424,11 @@ tbody tr:last-child td { border-bottom: none; }
       <line x1="255" y1="300" x2="255" y2="332" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a2)"/>
       <text x="269" y="318" font-size="11" font-weight="600" fill="#0D7A6B">YES</text>
       <!-- NO right: side box centered at y=262 -->
-      <line x1="355" y1="262" x2="366" y2="262" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a2)"/>
-      <text x="357" y="251" font-size="11" font-weight="600" fill="#D97706">NO</text>
-      <rect x="368" y="238" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
-      <text x="503" y="256" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Routes to support path</text>
-      <text x="503" y="274" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Transition to Support</text>
+      <line x1="355" y1="262" x2="394" y2="262" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a2)"/>
+      <text x="362" y="251" font-size="11" font-weight="600" fill="#D97706">NO</text>
+      <rect x="398" y="238" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="533" y="256" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Routes to support path</text>
+      <text x="533" y="274" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Transition to Support</text>
 
       <!-- 5. End pill y=332 h=40 -->
       <rect x="135" y="332" width="240" height="40" rx="20" fill="#D1FAE5" stroke="#059669" stroke-width="1"/>
@@ -442,7 +448,7 @@ tbody tr:last-child td { border-bottom: none; }
     </thead>
     <tbody>
       <tr>
-        <td>Customer name and account ID</td>
+        <td>Customer Account (Salesforce)</td>
         <td><span class="badge badge-green">Required</span></td>
         <td></td>
       </tr>
@@ -454,7 +460,13 @@ tbody tr:last-child td { border-bottom: none; }
       <tr>
         <td>Reason for request</td>
         <td><span class="badge badge-green">Required</span></td>
-        <td>Select from defined reason list — to be finalized (see open items)</td>
+        <td>
+          Select one:<br><br>
+          <strong>1. Part of a larger strategic sale or deal</strong><br>
+          <strong>2. ARR close to threshold with documented growth or acquisition plans</strong><br>
+          <strong>3. Industry influence</strong> — e.g. owner has prior leadership or brand affiliation within the pet care industry<br>
+          <strong>4. Other</strong> — requires written justification; approval subject to CS capacity
+        </td>
       </tr>
       <tr>
         <td>Narrative justification</td>
@@ -507,7 +519,7 @@ tbody tr:last-child td { border-bottom: none; }
     <!-- Main flow centered at x=255, boxes x=120 w=270.
          Escalation diamond: center x=255, half-width=110 (left=145, right=365).
          Side boxes: x=378 w=270 (center=513, right=648). -->
-    <svg width="100%" viewBox="0 0 680 640"
+    <svg width="100%" viewBox="0 0 720 640"
          font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
          role="img">
       <title>Transition to Support process flow for T4 and T5 customers</title>
@@ -536,11 +548,11 @@ tbody tr:last-child td { border-bottom: none; }
       <line x1="255" y1="248" x2="255" y2="272" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
       <text x="269" y="262" font-size="11" font-weight="600" fill="#0D7A6B">NO</text>
       <!-- YES right: side box centered at y=206 -->
-      <line x1="365" y1="206" x2="376" y2="206" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
-      <text x="367" y="195" font-size="11" font-weight="600" fill="#D97706">YES</text>
-      <rect x="378" y="182" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
-      <text x="513" y="200" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Support proactive outreach</text>
-      <text x="513" y="218" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Email held, account flagged</text>
+      <line x1="365" y1="206" x2="404" y2="206" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
+      <text x="372" y="195" font-size="11" font-weight="600" fill="#D97706">YES</text>
+      <rect x="408" y="182" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="543" y="200" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Support proactive outreach</text>
+      <text x="543" y="218" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Email held, account flagged</text>
 
       <!-- 4. Go-live email (dark — transition marker) y=272 h=60 -->
       <rect x="120" y="272" width="270" height="60" rx="8" fill="#0D7A6B" stroke="#0B4C41" stroke-width="1"/>
@@ -564,11 +576,11 @@ tbody tr:last-child td { border-bottom: none; }
       <line x1="255" y1="534" x2="255" y2="560" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
       <text x="269" y="549" font-size="11" font-weight="600" fill="#0D7A6B">NO</text>
       <!-- YES right: side box centered at y=496 -->
-      <line x1="365" y1="496" x2="376" y2="496" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
-      <text x="367" y="485" font-size="11" font-weight="600" fill="#D97706">YES</text>
-      <rect x="378" y="472" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
-      <text x="513" y="490" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Support outreach</text>
-      <text x="513" y="508" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Call booked with customer</text>
+      <line x1="365" y1="496" x2="404" y2="496" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#a3)"/>
+      <text x="372" y="485" font-size="11" font-weight="600" fill="#D97706">YES</text>
+      <rect x="408" y="472" width="270" height="48" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1"/>
+      <text x="543" y="490" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" fill="#78350F">Support outreach</text>
+      <text x="543" y="508" text-anchor="middle" dominant-baseline="central" font-size="11" fill="#92400E">Call booked with customer</text>
 
       <!-- 7. End pill y=560 h=40 -->
       <rect x="135" y="560" width="240" height="40" rx="20" fill="#D1FAE5" stroke="#059669" stroke-width="1"/>
@@ -605,11 +617,6 @@ tbody tr:last-child td { border-bottom: none; }
         <td>ARR threshold confirmation</td>
         <td><span class="badge badge-purple">GTM Leadership / Kev</span></td>
         <td>$12K is a placeholder. Needs sign-off before process goes live.</td>
-      </tr>
-      <tr>
-        <td>Exception request reason categories</td>
-        <td><span class="badge badge-teal">CS + Impl Leadership</span></td>
-        <td>Define the selectable reason list for the exception request form.</td>
       </tr>
       <tr>
         <td>Exception request form delivery</td>
@@ -669,7 +676,7 @@ tbody tr:last-child td { border-bottom: none; }
 
 <div class="doc-footer">
   <p>MoeGo Implementation · Customer Transition Framework · For internal review only</p>
-  <span class="draft-pill">Status: Draft — Pending Review</span>
+  <span class="draft-pill">Draft — Pending Review</span>
 </div>
 
 </div>
